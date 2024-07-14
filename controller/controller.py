@@ -159,32 +159,66 @@ class LambdaCalcController:
 
     def get_chatgpt_explanations(self, steps):
         """Get explanations from ChatGPT."""
-        url = f"https://{RAPIDAPI_HOST}/v1/chat/completions"
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization': f'Bearer {RAPIDAPI_KEY}',
-            'X-RapidAPI-Host': RAPIDAPI_HOST
-        }
-        data = {
-            "model": "gpt-3.5-turbo",
-            "messages": [
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": f"Explain the following steps in lambda calculus: {steps}"}
-            ]
-        }
-        try:
-            response = requests.post(url, json=data, headers=headers)
-            response.raise_for_status()
-            result = response.json()
-            explanations = result.get("choices", [{}])[0].get("message", {}).get("content", "")
-            return explanations
-        except requests.RequestException as e:
-            print(f"Error fetching explanations from ChatGPT: {e}")
-            self.view.display_error(f"Error fetching explanations from ChatGPT: {e}")
-            return None
+        url = "https://chatgpt-42.p.rapidapi.com/conversationgpt4-2"
+        
+        prompt = "Explain the following lambda calculus evaluation steps:\n\n"
+        for step in steps:
+            prompt += step + "\n"
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    view = LambdaCalcView(root)
-    controller = LambdaCalcController(view)
-    root.mainloop()
+        payload = {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            "system_prompt": "",
+            "temperature": 0.9,
+            "top_k": 5,
+            "top_p": 0.9,
+            "max_tokens": 256,
+            "web_access": False
+        }
+        headers = {
+            "x-rapidapi-key": RAPIDAPI_KEY,
+            "x-rapidapi-host": RAPIDAPI_HOST,
+            "Content-Type": "application/json"
+        }
+
+        response = requests.post(url, json=payload, headers=headers)
+        
+        if response.status_code == 200:
+            response_data = response.json()
+            return response_data
+        elif response.status_code == 403:
+            return "Error: API key is invalid."
+        else:
+            return f"Error: {response.status_code} - {response.text}"
+        #headers = {
+        #    'Content-Type': 'application/json',
+        #    'Authorization': f'Bearer {RAPIDAPI_KEY}',
+        #    'X-RapidAPI-Host': RAPIDAPI_HOST
+        #}
+        #data = {
+        #    "model": "gpt-3.5-turbo",
+        #    "messages": [
+        #        {"role": "system", "content": "You are a helpful assistant."},
+        #        {"role": "user", "content": f"Explain the following steps in lambda calculus: {steps}"}
+        #    ]
+        #}
+        #try:
+        #    response = requests.post(url, json=data, headers=headers)
+        #    response.raise_for_status()
+        #    result = response.json()
+        #    explanations = result.get("choices", [{}])[0].get("message", {}).get("content", "")
+        #    return explanations
+        #except requests.RequestException as e:
+        #    print(f"Error fetching explanations from ChatGPT: {e}")
+        #    self.view.display_error(f"Error fetching explanations from ChatGPT: {e}")
+        #    return None
+
+#if __name__ == "__main__":
+#    root = tk.Tk()
+#    view = LambdaCalcView(root)
+#    controller = LambdaCalcController(view)
+#    root.mainloop()
