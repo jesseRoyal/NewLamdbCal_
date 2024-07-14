@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lambda Calculus Interpreter</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-group, .button-group, .output-group {
+            margin-bottom: 20px;
+        }
+
+        .input-field, .output-field {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            flex: 1;
+            margin: 0 5px;
+            text-align: center;
+        }
+
+        .evaluate { background-color: #007bff; }
+        .alpha-convert { background-color: #28a745; }
+        .eta-reduce { background-color: #ffc107; }
+        .clear { background-color: #dc3545; }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 600px) {
+            .btn {
+                flex: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lambda Calculus Interpreter</h1>
+        <div class="input-group">
+            <label for="lambda-expression">Lambda Expression:</label>
+            <input type="text" id="lambda-expression" class="input-field">
+        </div>
+        <div class="button-group">
+            <button class="btn evaluate">Evaluate</button>
+            <button class="btn alpha-convert">Alpha Convert</button>
+            <button class="btn eta-reduce">Eta Reduce</button>
+            <button class="btn clear">Clear</button>
+        </div>
+        <div class="output-group">
+            <label for="tokens">Tokens:</label>
+            <textarea id="tokens" class="output-field" rows="4"></textarea>
+        </div>
+        <div class="output-group">
+            <label for="ast">AST:</label>
+            <textarea id="ast" class="output-field" rows="4"></textarea>
+        </div>
+        <div class="output-group">
+            <label for="evaluation">Evaluation:</label>
+            <textarea id="evaluation" class="output-field" rows="4"></textarea>
+        </div>
+        <div class="output-group">
+            <label for="explanations">Explanations:</label>
+            <textarea id="explanations" class="output-field" rows="4"></textarea>
+        </div>
+    </div>
+</body>
+</html>
