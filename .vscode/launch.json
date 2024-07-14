@@ -8,11 +8,13 @@
             "module": "flask",
             "env": {
                 "FLASK_APP": "startup:app",
+                "FLASK_DEBUG": "1",
                 "FLASK_ENV": "development"
             },
             "args": [
                 "run",
-                "--no-debugger"
+                "--no-debugger",
+                "--no-reload"
             ],
             "jinja": true
         }

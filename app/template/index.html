@@ -109,5 +109,32 @@
             <textarea id="explanations" class="output-field" rows="4"></textarea>
         </div>
     </div>
+
+    <script>
+        document.getElementById('compileForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            var code = document.getElementById('codeInput').value; // Get code from textarea
+            compileCode(code); // Call compileCode function with code as argument
+        });
+    
+        function compileCode(code) {
+            var xhr = new XMLHttpRequest(); // Create new XMLHttpRequest object
+            xhr.open('POST', '/compile', true); // Open POST request to /compile route
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Set request header
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) { // Check if request is complete and successful
+                    var outputDiv = document.getElementById('output');
+                    outputDiv.innerHTML = ""; // Clear previous output
+                    var lines = xhr.responseText.split('\n'); // Split response by newline character
+                    lines.forEach(function(line) { // Iterate over lines
+                        var textNode = document.createTextNode(line); // Create text node for each line
+                        outputDiv.appendChild(textNode); // Append text node to output div
+                        outputDiv.appendChild(document.createElement("br")); // Add line break after each line
+                    });
+                }
+            };
+            xhr.send('code=' + encodeURIComponent(code)); // Send code in the request body
+        }
+    </script>
 </body>
 </html>
