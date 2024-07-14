@@ -54,14 +54,14 @@ class LambdaCalcView:
         self.evaluation_label = tk.Label(output_frame, text="Evaluation:", font=("Arial", 12), bg="#f0f0f0")
         self.evaluation_label.grid(row=4, column=0, sticky="w", padx=5, pady=5)
 
-        self.evaluation_text = scrolledtext.ScrolledText(output_frame, height=10, font=("Arial", 12))
+        self.evaluation_text = scrolledtext.ScrolledText(output_frame, height=6, font=("Arial", 12))
         self.evaluation_text.grid(row=5, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
 
         self.explanation_label = tk.Label(output_frame, text="Explanations:", font=("Arial", 12), bg="#f0f0f0")
         self.explanation_label.grid(row=6, column=0, sticky="w", padx=5, pady=5)
 
-        self.explanation_text = scrolledtext.ScrolledText(output_frame, height=5, font=("Arial", 12))
-        self.explanation_text.grid(row=7, column=0, columnspan=2, sticky="ew", padx=5, pady=5)
+        self.explanation_text = scrolledtext.ScrolledText(output_frame, height=8, font=("Arial", 12))
+        self.explanation_text.grid(row=7, column=0, columnspan=5, sticky="ew", padx=5, pady=5)
 
     def set_eval_button_command(self, command):
         self.eval_button.config(command=command)

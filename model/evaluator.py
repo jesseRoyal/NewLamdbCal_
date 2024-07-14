@@ -84,17 +84,32 @@ def beta_reduce(expr, logger):
         return substitute(expr.func.body, expr.func.var, expr.arg, logger)
     return expr
 
-def eta_reduce(expr, logger):
+def eta_reduce(expr, logger, top_level=True):
     """Perform eta reduction."""
-    if expr is None or logger is None:
-        raise ValueError("Input parameters cannot be None.")
-    
     if isinstance(expr, Lambda):
-        if expr.body is not None and isinstance(expr.body, App) and expr.body.arg is not None and isinstance(expr.body.arg, Var) and expr.body.arg.name == expr.var:
+        if isinstance(expr.body, App) and isinstance(expr.body.arg, Var) and expr.body.arg.name == expr.var:
             if not occurs_free(expr.body.func, expr.var):
-                logger.log(f"Performing Eta Reduction: {expr}")
-                return expr.body.func
+                logger.log(f"Performing Eta Reduction: (λ {expr.var} . ({expr.body.func} {expr.body.arg})) = {expr.body.func}")
+                result = expr.body.func
+                logger.log(f"Result after Eta Reduction: {result}")
+                return result
+    if isinstance(expr, App):
+        # Recursively apply eta reduction to components of the application
+        new_func = eta_reduce(expr.func, logger, top_level=False)
+        new_arg = eta_reduce(expr.arg, logger, top_level=False)
+        result = App(new_func, new_arg)
+        if top_level:
+            logger.log(f"Result after Eta Reduction: {result}")
+        return result
+    if isinstance(expr, Lambda):
+        # Recursively apply eta reduction to the body of the lambda
+        new_body = eta_reduce(expr.body, logger, top_level=False)
+        result = Lambda(expr.var, new_body)
+        if top_level:
+            logger.log(f"Result after Eta Reduction: {result}")
+        return result
     return expr
+
 
 def occurs_free(expr, var):
     """Check if var occurs free in expr."""
