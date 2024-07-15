@@ -46,7 +46,7 @@ def compile_code():
     # So that the output does not print in the console
     code = code.replace("PRINT", "PRINT_RET") 
 
-    result, error = main.run('<stdin>', code)
+    result, error = main.run('', code)
 
     if error:
         return error.as_string()
